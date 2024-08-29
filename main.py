@@ -3,6 +3,7 @@ import json
 import datetime
 import boto3
 import requests
+import stat
 from pytz import timezone
 
 def main():
@@ -87,6 +88,7 @@ def save_data(data):
     file_path = 'tmp/data.json'
     with open(file_path, 'w') as f:
         json.dump(data, f)
+    os.chmod(file_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH | stat.S_IWOTH)
 
 def send_discord_message(message):
     WEBHOOK_URL = os.environ.get('DISCORD_WEBHOOK_URL')
