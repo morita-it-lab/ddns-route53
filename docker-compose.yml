@@ -1,0 +1,31 @@
+services:
+
+  ddns-updater:
+    build:
+      context: .
+      dockerfile: python.dockerfile
+    volumes:
+      - .:/app
+
+    # ------------------------------
+    # .env file is required.
+    # Please refer to the .env.example file.
+    # ------------------------------
+    env_file:
+      - .env
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - HOSTED_ZONE_ID=${HOSTED_ZONE_ID}
+      - RECORD_NAME=${RECORD_NAME}
+      - TTL=${TTL}
+      - TIMEZONE=${TIMEZONE}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - CHECK_INTERVAL_SECCONDS=${CHECK_INTERVAL_SECCONDS}
+
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10k"
+        max-file: "3"
